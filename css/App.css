@@ -1,0 +1,148 @@
+.App, body, html {
+  text-align: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgb(0, 0, 24);
+  color: white;
+  font-size: 100%;
+  font-family: Tahoma, Verdana, sans-serif;
+  display: flex; align-items: center;
+  justify-content: center;
+  margin: 0 0;
+  overflow: hidden;
+}
+
+.text {
+  font-size: 170%;
+  overflow: hidden;
+  white-space: pre;
+  cursor: default;
+  position: absolute;
+  left: 10vw;
+  pointer-events: none;
+  height: 100vh;
+  top: 0;
+  display: flex; align-items: center;
+  justify-content: left;
+  width: 90vw;
+  text-align: left;
+  color: rgba(255, 255, 255, 0.401);
+}
+
+.blur-message {
+  position: absolute; top: 0; left: 0;
+  backdrop-filter: blur(10px);
+  transition: .5s; 
+  height: 100%; width: 100%;
+  cursor: default; z-index: 1;
+  display: flex; align-items: center;
+  justify-content: center;
+  font-size: 150%;
+}
+
+input {
+  opacity: 0; cursor: default;
+  width: 100vw; height: 50vh;
+  position: absolute; top: 25vh;
+  left: 0; z-index: 2;
+}
+
+@keyframes caret {
+  0% { opacity: 100% }
+  50% { opacity: 0% }
+  100% { opacity: 100% }
+}
+
+/*# sourceMappingURL=App.css.map */
+
+.menu__outer {
+  display: flex; align-items: center;
+  justify-content: end;
+  padding-right: 10%;
+  z-index: 9999;
+  width: 100vw; height: 35vh;
+  position: absolute;
+  top: 65vh;
+  flex-direction: column;
+}
+
+.menu__buttons-panel {
+  height: 40%;
+  margin-bottom: 0.2em;
+  display: flex;
+  justify-content: end;
+  width: 100%;
+  align-items: center;
+}
+
+.menu__description {
+  display: flex; align-items: center;
+  padding-bottom: 0.4%;
+  justify-content: end;
+  height: 30%;
+  opacity: 0;
+  font-size: 100%;
+  pointer-events: none;
+  transition: .3s;
+  width: 100%;
+  text-align: right;
+  padding-right: 3%;
+}
+
+.menu__button {
+  border-radius: 100%;
+  background-position: center;
+  background-size: cover;
+  opacity: 40%;
+  pointer-events: none;
+  border: white solid 2px;
+  color: white;
+  background-repeat: no-repeat;
+  background-color: rgba(255, 255, 255, 0);
+  height: 100%; aspect-ratio: 1;
+  transition: .3s;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-position: center center;
+  margin: 0.5em;
+}
+
+.modes {
+  border: none;
+}
+
+.menu-icon {
+  pointer-events: all;
+  opacity: 40%;
+  background-image: url(../img/menu-img.png);
+  background-size: 40%;
+}
+
+
+.menu__mode-progress {
+  color: rgba(255, 255, 255, 0.4);
+  height: 100vh; width: 100vw;
+  font-size: 150%;
+  position: absolute;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  padding-left: 27%;
+  padding-bottom: 5%;
+}
+
+.menu__button:hover {
+  opacity: 100%;
+}
+
+.result-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: rgb(17, 13, 47);
+  padding: 5px 40px;
+}
