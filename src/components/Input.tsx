@@ -2,17 +2,15 @@ import React, { useState, useRef, useEffect, Ref } from 'react';
 import '../css/App.css';
 
 type inputProps = {
-  curMode: string;
+  mode: string;
   wordsVariance: string;
   timeVariance: string;
-  progress: string;
   setProgress: (arg: string) => void;
 }
 
 const Input = ({
-  curMode,
+  mode,
   wordsVariance,
-  progress,
   setProgress,
   timeVariance,
 } : inputProps ) => {
@@ -54,30 +52,30 @@ const Input = ({
   }
 
   const changeProgress = useEffect(() => {
-    if (curMode === "Words") {
+    if (mode === "Words") {
       setProgress(wordsProgress + " / " + wordsVariance);
     }
-    else if (curMode === "Time") {
+    else if (mode === "Time") {
       if (timeProgress < 1) {
         setProgress(makeTimePrettier('0'));
       } else {
         setProgress(makeTimePrettier(timeProgress.toString()));
       }
     }
-  }, [curMode, timeProgress, wordsProgress]);
+  }, [mode, timeProgress, wordsProgress, wordsVariance]);
 
   const changeVariance = useEffect(() => {
     composeString();
 
-    if (curMode === "Time") {
+    if (mode === "Time") {
       setTimeProgress(Number(timeVariance));
     } 
-    else if (curMode === "Words") {
+    else if (mode === "Words") {
       setWordsProgress(0);
     }
 
     clearInterval(timer);
-  }, [timeVariance, wordsVariance, curMode])
+  }, [timeVariance, wordsVariance, mode])
 
   const caret = "<font style='color: #FFB02E; margin: 0 -4px; animation: caret 1s infinite'>|</font>";
     
@@ -106,12 +104,12 @@ const Input = ({
       /*----------------
         start of typing
       -----------------*/
-      if (curMode === "Words") {
+      if (mode === "Words") {
         const start = Date.now();
 
         setTimeProgress(start);
       } 
-      else if (curMode === "Time") {
+      else if (mode === "Time") {
         timer = setInterval(() => {
           
           setTimeProgress(time => {
@@ -121,7 +119,7 @@ const Input = ({
       }
     } 
 
-    else if (wordsProgress.toString() == wordsVariance && curMode === "Words") {
+    else if (wordsProgress.toString() == wordsVariance && mode === "Words") {
       /*-----------------
          end of typing   
       ------------------*/
@@ -129,7 +127,7 @@ const Input = ({
     }
 
     if (currentInputLength > passedInputLength) {
-      if (curMode === "Words" && string[indToFill-1] === ' ') {
+      if (mode === "Words" && string[indToFill-1] === ' ') {
         setWordsProgress(prev => prev + 1);
       }
 
@@ -145,7 +143,7 @@ const Input = ({
 
     } 
     else if (indToFill > 1) {
-      if (curMode === "Words" && string[indToFill-2] === ' ') {
+      if (mode === "Words" && string[indToFill-2] === ' ') {
         setWordsProgress(prev => prev - 1);
       }
 
@@ -186,7 +184,7 @@ const Input = ({
   },[splitted])
 
   // By the first render
-  useEffect(composeString, [curMode, wordsVariance, timeVariance]);
+  useEffect(composeString, [mode, wordsVariance, timeVariance]);
   
   function showMessage() {
     blurRef.current.style.opacity = '100%';

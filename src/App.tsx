@@ -1,33 +1,30 @@
 import React, { useEffect, useState, useRef } from 'react';
-import Input from './react/Input';
-import Menu from './react/Menu';
+import Input from './components/Input';
+import Menu from './components/Menu';
 
 
 const App = () => {
   // UI
-  const [isMenuActive, setIsMenuActive] = useState(false);
-  
-  // Input States
-  const [mode, setMode] = useState("Words");
-  const [timeVariance, setTimeVariance] = useState("15");
-  const [wordsProgress, setWordsProgress] = useState(0);
-  const [wordsVariance, setWordsVariance] = useState("10");
+  const [isMenuActive, setIsMenuActive] = useState(true);
   const [progress, setProgress] = useState("0 / 10");
+  
+  // Input modificators
+  const [mode, setMode] = useState("Words");
+  const [timeVariance, setTimeVariance] = useState("15")
+  const [wordsVariance, setWordsVariance] = useState("10");
 
   return (
     <div className="App">
       <Input
-        progress={progress}
-        setProgress={setProgress}
-        curMode={mode}
+        mode={mode}
         wordsVariance={wordsVariance}
         timeVariance={timeVariance}
+        setProgress={setProgress}
       />
       <Menu
-        curMode={mode}
+        mode={mode}
         setMode={setMode}
         progress={progress}
-        setProgress={setProgress}
         wordsVariance={wordsVariance}
         setWordsVariance={setWordsVariance}
         timeVariance={timeVariance}
@@ -38,6 +35,5 @@ const App = () => {
     </div>
   );
 }
-
 
 export default App;

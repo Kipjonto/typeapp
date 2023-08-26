@@ -1,27 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../css/App.css';
-import timeImg from '../img/time-img.png';
-import infinityImg from '../img/inf-img.png';
-import wordsImg from '../img/words-img.png';
-import settingsImg from '../img/settings-img.png';
-import crownImg from '../img/crown-img.png';
 
 type UIcontrolProps = {
-  curMode: string; 
+  mode: string; 
   isMenuActive: boolean;
   showDescribe: (arg: string) => void;
   hideDescribe: () => void; 
 }
 
-type backgroundProps = {
-  bgImage: string;
-  bgSize: string;
-}
 
-
-type settingProps = backgroundProps & UIcontrolProps & {
+type settingProps = UIcontrolProps & {
   openSetting: () => void;
   setting: string;
+  bgClassName: string;
 }
 
 const Setting = ({
@@ -29,53 +20,52 @@ const Setting = ({
   showDescribe, 
   hideDescribe,
   isMenuActive, 
-  bgImage, 
-  bgSize, 
+  bgClassName,
   setting
 } : settingProps) => {
   return (
     <button
-    className="menu__button modes"
-    onClick={openSetting}
+      className={"menu__button " + bgClassName}
+      onClick={openSetting}
       onMouseOver={() => showDescribe(setting)}
       onMouseLeave={hideDescribe}
       style={
-        isMenuActive ?
-          {pointerEvents: "all", backgroundImage: bgImage, backgroundSize: bgSize}
-          : {pointerEvents: "none", opacity: "0%"}
-        }
-        />
-        )
+        !isMenuActive ?
+          {opacity: "0%", pointerEvents: "none"}
+        : {}
       }
+    />
+  )
+}
       
-      type modeProps = UIcontrolProps & backgroundProps & {
-        childMode: string;
-        curMode: string;
-        setMode: (arg: string) => void; 
-      }
+type modeProps = UIcontrolProps & {
+  childMode: string;
+  mode: string;
+  setMode: (arg: string) => void; 
+  bgClassName: string;
+}
       
-      const Mode = ({
-        setMode,
-        showDescribe,
-        hideDescribe,
-        curMode,
-        childMode,
-        isMenuActive,
-  bgImage,
-  bgSize
+const Mode = ({
+  setMode,
+  showDescribe,
+  hideDescribe,
+  mode,
+  childMode,
+  isMenuActive,
+  bgClassName,
 }: modeProps) =>  {
   return (
     <button 
-    className="menu__button modes"
-    onClick={() => setMode(childMode)} 
-    onMouseOver={() => showDescribe(childMode + " mode")}
-    onMouseLeave={hideDescribe} 
-    style={
+      className={"menu__button " + bgClassName}
+      onClick={() => setMode(childMode)} 
+      onMouseOver={() => showDescribe(childMode + " mode")}
+      onMouseLeave={hideDescribe} 
+      style={
         isMenuActive ?
-        childMode == curMode ?
-        {pointerEvents: "all", opacity: "100%", backgroundImage: bgImage, backgroundSize: bgSize} 
-            : {pointerEvents: "all", backgroundImage: bgImage, backgroundSize: bgSize}  
-          : {opacity: '0%'}
+          childMode == mode ?
+            {opacity: "100%"} 
+          : {}  
+        : {opacity: '0%', pointerEvents: "none"}
       } 
     />
   );
@@ -95,7 +85,7 @@ const Variance = ({
   varianceState,
   showDescribe,
   hideDescribe,
-  curMode,
+  mode,
   childMode,
   isMenuActive,
 } : varianceProps) => {
@@ -105,11 +95,12 @@ const Variance = ({
       onClick={() => setVariance(variance)}
       onMouseOver={() => showDescribe(childMode + ' mode / ' + variance)}
       onMouseLeave={hideDescribe}
-      style={isMenuActive && childMode == curMode ?
-                varianceState == variance ?
-                  {pointerEvents: "all", opacity: "100%"}
-                  : {pointerEvents: "all"}
-              : {opacity: "0%"}} 
+      style={
+        isMenuActive && childMode == mode ?
+          varianceState == variance ?
+            {opacity: "100%"}
+          : {}
+        : {opacity: "0%", pointerEvents: "none"}} 
     >
       {variance}
     </button>
@@ -119,10 +110,9 @@ const Variance = ({
 type menuProps = {
   setIsMenuActive: (arg: boolean) => void;
   isMenuActive: boolean;
-  curMode: string;
+  mode: string;
   setMode: (arg: string) => void;
   progress: string;
-  setProgress: (arg: string) => void;
   wordsVariance: string;
   setWordsVariance: (arg: string) => void;
   timeVariance: string;
@@ -130,12 +120,11 @@ type menuProps = {
 }
   
 const Menu = ({
-  curMode, 
+  mode, 
   setMode,
   isMenuActive,
   setIsMenuActive,
   progress,
-  setProgress,
   setTimeVariance,
   setWordsVariance,
   wordsVariance,
@@ -143,10 +132,6 @@ const Menu = ({
 } : menuProps) => {
   const [currentButton, setCurrentButton] = useState("");
   const describeRef = useRef<HTMLParagraphElement>(null!);
-  
-  function manageButtonsPanel() {
-    setIsMenuActive(!isMenuActive);
-  }
 
   function showDescribe(button: string) {
     setCurrentButton(button);
@@ -156,43 +141,27 @@ const Menu = ({
   function hideDescribe() {
     describeRef.current.style.opacity = '0%';
   }
-
-  function useDzenMode() {
-    setMode("Dzen");
-    setProgress('');
-  }
-
-  function useTimeMode() {
-    setMode("Time");
-  }
-
-  function useTimeVariance(variance: string) {
-    setTimeVariance(variance);
-  }
-
-
-  function useWordsMode() {
-    setMode("Words");
-    setProgress('0 / ' + wordsVariance);
-  }
-
-  function useWordsVariance(variance: string) {
-    setWordsVariance(variance);
-    setProgress('0 / ' + wordsVariance);
-  }
-  
   
   return (
     <div className='menu__outer'>
-      <div className='menu__mode-progress'>{progress}</div>
+      <div 
+        className='menu__progress'
+        style={
+          mode === "Dzen" ? 
+            {opacity: "0%"} 
+          : {}
+        }
+      >
+        {progress}
+      </div>
       <div className='menu__buttons-panel'>
         <Variance 
           variance="50" 
           childMode="Words" 
           varianceState={wordsVariance} 
-          setVariance={useWordsVariance} 
+          setVariance={setWordsVariance} 
           isMenuActive={isMenuActive} 
-          curMode={curMode} 
+          mode={mode} 
           showDescribe={showDescribe} 
           hideDescribe={hideDescribe} 
         />
@@ -200,9 +169,9 @@ const Menu = ({
           variance="60" 
           childMode="Time" 
           varianceState={timeVariance} 
-          setVariance={useTimeVariance} 
+          setVariance={setTimeVariance} 
           isMenuActive={isMenuActive} 
-          curMode={curMode} 
+          mode={mode} 
           showDescribe={showDescribe} 
           hideDescribe={hideDescribe} 
         />
@@ -214,9 +183,9 @@ const Menu = ({
           variance="25" 
           childMode="Words" 
           varianceState={wordsVariance} 
-          setVariance={useWordsVariance} 
+          setVariance={setWordsVariance} 
           isMenuActive={isMenuActive} 
-          curMode={curMode} 
+          mode={mode} 
           showDescribe={showDescribe} 
           hideDescribe={hideDescribe}  
         />
@@ -224,9 +193,9 @@ const Menu = ({
           variance="30" 
           childMode="Time" 
           varianceState={timeVariance} 
-          setVariance={useTimeVariance}
+          setVariance={setTimeVariance}
           isMenuActive={isMenuActive} 
-          curMode={curMode} 
+          mode={mode} 
           showDescribe={showDescribe} 
           hideDescribe={hideDescribe}  
         />
@@ -238,9 +207,9 @@ const Menu = ({
           variance="10" 
           childMode="Words" 
           varianceState={wordsVariance} 
-          setVariance={useWordsVariance} 
+          setVariance={setWordsVariance} 
           isMenuActive={isMenuActive} 
-          curMode={curMode} 
+          mode={mode} 
           showDescribe={showDescribe} 
           hideDescribe={hideDescribe} 
         />
@@ -248,9 +217,9 @@ const Menu = ({
           variance="15" 
           childMode="Time" 
           varianceState={timeVariance} 
-          setVariance={useTimeVariance} 
+          setVariance={setTimeVariance} 
           isMenuActive={isMenuActive} 
-          curMode={curMode} 
+          mode={mode} 
           showDescribe={showDescribe} 
           hideDescribe={hideDescribe} 
         />
@@ -258,12 +227,12 @@ const Menu = ({
         <div className='menu__button modes' />
       </div>
       <div className='menu__buttons-panel'>
-        <Setting curMode={curMode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setting="Score" openSetting={() => {}} bgImage={`url(${crownImg})`} bgSize='60%' />
-        <Mode childMode="Dzen" curMode={curMode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setMode={useDzenMode} bgImage={`url(${infinityImg})`} bgSize='60%' />
-        <Mode childMode="Words" curMode={curMode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setMode={useWordsMode} bgImage={`url(${wordsImg})`} bgSize='40%' />
-        <Mode childMode="Time" curMode={curMode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setMode={useTimeMode} bgImage={`url(${timeImg})`} bgSize='30%' />
-        <Setting curMode={curMode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setting="Settings" openSetting={() => {}} bgImage={`url(${settingsImg})`} bgSize='45%' />
-        <button className='menu__button menu-icon' onMouseLeave={hideDescribe} onMouseOver={() => showDescribe("Menu")} onClick={manageButtonsPanel} style={isMenuActive ? {opacity: '100'} : {} } />
+        <Setting mode={mode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setting="Score" openSetting={() => {}} bgClassName='scores' />
+        <Mode childMode="Dzen" mode={mode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setMode={setMode} bgClassName='dzen' />
+        <Mode childMode="Words" mode={mode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setMode={setMode} bgClassName='words' />
+        <Mode childMode="Time" mode={mode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setMode={setMode} bgClassName='time' />
+        <Setting mode={mode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setting="Settings" openSetting={() => {}} bgClassName='settings' />
+        <button className='menu__button menu-icon' onMouseLeave={hideDescribe} onMouseOver={() => showDescribe("Menu")} onClick={() => setIsMenuActive(!isMenuActive)} style={isMenuActive ? {opacity: '100'} : {} } />
       </div>
       <div className='menu__description' ref={describeRef}>{currentButton}</div>
     </div>
