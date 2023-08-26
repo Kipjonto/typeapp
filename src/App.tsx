@@ -1,13 +1,10 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useState } from 'react';
 import Input from './components/Input';
 import Menu from './components/Menu';
+import SettingsWindow from './components/SettingsWindow';
 
 
 const App = () => {
-  // UI
-  const [isMenuActive, setIsMenuActive] = useState(true);
-  const [progress, setProgress] = useState("0 / 10");
-  
   // Input modificators
   const [mode, setMode] = useState("Words");
   const [timeVariance, setTimeVariance] = useState("15")
@@ -19,19 +16,16 @@ const App = () => {
         mode={mode}
         wordsVariance={wordsVariance}
         timeVariance={timeVariance}
-        setProgress={setProgress}
       />
       <Menu
         mode={mode}
         setMode={setMode}
-        progress={progress}
         wordsVariance={wordsVariance}
         setWordsVariance={setWordsVariance}
         timeVariance={timeVariance}
         setTimeVariance={setTimeVariance}
-        isMenuActive={isMenuActive}
-        setIsMenuActive={setIsMenuActive}
       />
+      <SettingsWindow />
     </div>
   );
 }

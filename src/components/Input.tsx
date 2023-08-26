@@ -5,19 +5,18 @@ type inputProps = {
   mode: string;
   wordsVariance: string;
   timeVariance: string;
-  setProgress: (arg: string) => void;
 }
 
 const Input = ({
   mode,
   wordsVariance,
-  setProgress,
   timeVariance,
 } : inputProps ) => {
   const blurRef = useRef<HTMLDivElement>(null!);
   const textRef = useRef<HTMLDivElement>(null!); 
   const inputRef = useRef<HTMLInputElement>(null!);
 
+  const [progress, setProgress] = useState("0 / 10");
   const [wordsProgress, setWordsProgress] = useState(0);
   const [timeProgress, setTimeProgress] = useState(Number(timeVariance));
 
@@ -72,7 +71,7 @@ const Input = ({
     } 
     else if (mode === "Words") {
       setWordsProgress(0);
-    }
+    } 
 
     clearInterval(timer);
   }, [timeVariance, wordsVariance, mode])
@@ -196,6 +195,21 @@ const Input = ({
 
   return (
     <>
+      <div className='speed-indicator'>
+        <p>0wpm</p>
+        <p>Mode: time</p>
+        <p>Variance: 15s</p>
+      </div>
+      <div 
+        className='progress'
+        style={
+          mode === "Dzen" ? 
+            {opacity: "0%"} 
+          : {}
+        }
+      >
+        {progress}
+      </div>
       <div className='blur-message' ref={blurRef}>Click to focus</div>
       <input 
         ref={inputRef}

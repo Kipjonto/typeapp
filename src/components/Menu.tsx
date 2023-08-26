@@ -108,11 +108,8 @@ const Variance = ({
 }
   
 type menuProps = {
-  setIsMenuActive: (arg: boolean) => void;
-  isMenuActive: boolean;
   mode: string;
   setMode: (arg: string) => void;
-  progress: string;
   wordsVariance: string;
   setWordsVariance: (arg: string) => void;
   timeVariance: string;
@@ -122,14 +119,12 @@ type menuProps = {
 const Menu = ({
   mode, 
   setMode,
-  isMenuActive,
-  setIsMenuActive,
-  progress,
   setTimeVariance,
   setWordsVariance,
   wordsVariance,
   timeVariance,
 } : menuProps) => {
+  const [isMenuActive, setIsMenuActive] = useState(true);
   const [currentButton, setCurrentButton] = useState("");
   const describeRef = useRef<HTMLParagraphElement>(null!);
 
@@ -144,16 +139,6 @@ const Menu = ({
   
   return (
     <div className='menu__outer'>
-      <div 
-        className='menu__progress'
-        style={
-          mode === "Dzen" ? 
-            {opacity: "0%"} 
-          : {}
-        }
-      >
-        {progress}
-      </div>
       <div className='menu__buttons-panel'>
         <Variance 
           variance="50" 
@@ -175,8 +160,8 @@ const Menu = ({
           showDescribe={showDescribe} 
           hideDescribe={hideDescribe} 
         />
-        <div className='menu__button modes' />
-        <div className='menu__button modes' />
+        <div className='menu__button button--non-active' />
+        <div className='menu__button button--non-active' />
       </div>
       <div className='menu__buttons-panel'>
         <Variance 
@@ -199,8 +184,8 @@ const Menu = ({
           showDescribe={showDescribe} 
           hideDescribe={hideDescribe}  
         />
-        <div className='menu__button modes' />
-        <div className='menu__button modes' />
+        <div className='menu__button button--non-active' />
+        <div className='menu__button button--non-active' />
       </div>
       <div className='menu__buttons-panel'>
         <Variance 
@@ -223,8 +208,8 @@ const Menu = ({
           showDescribe={showDescribe} 
           hideDescribe={hideDescribe} 
         />
-        <div className='menu__button modes' />
-        <div className='menu__button modes' />
+        <div className='menu__button button--non-active' />
+        <div className='menu__button button--non-active' />
       </div>
       <div className='menu__buttons-panel'>
         <Setting mode={mode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setting="Score" openSetting={() => {}} bgClassName='scores' />
