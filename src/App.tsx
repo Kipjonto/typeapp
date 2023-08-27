@@ -9,6 +9,7 @@ const App = () => {
   const [mode, setMode] = useState("Words");
   const [timeVariance, setTimeVariance] = useState("15")
   const [wordsVariance, setWordsVariance] = useState("10");
+  const [languageIndex, setLanguageIndex] = useState(0)
 
   return (
     <div className="App">
@@ -25,7 +26,9 @@ const App = () => {
         timeVariance={timeVariance}
         setTimeVariance={setTimeVariance}
       />
-      <SettingsWindow />
+      <SettingsWindow 
+        setLanguageIndex={setLanguageIndex}
+      />
     </div>
   );
 }
