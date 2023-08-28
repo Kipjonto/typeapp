@@ -196,9 +196,16 @@ const Input = ({
   return (
     <>
       <div className='speed-indicator'>
-        <p>0wpm</p>
-        <p>Mode: time</p>
-        <p>Variance: 15s</p>
+        <p>Last: 0wpm</p>
+        <p>Best: 0wpm</p>
+        <p>Mode: {mode}</p>
+        <p>{
+          mode === "Time" ? 
+            "Variance: " + timeVariance + 's'
+          : mode === "Words" ?
+            "Variance: " + wordsVariance
+          : ''
+        }</p>
       </div>
       <div 
         className='progress'

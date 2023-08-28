@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
+import tick from '../img/tick-img.png';
 
 type SettingsProps = {
+  isSettingsWindowActive: boolean;
   setLanguageIndex: (index: number) => void;
 }
 
 const SettingsWindow = ({
-  setLanguageIndex
+  setLanguageIndex,
+  isSettingsWindowActive
 }: SettingsProps) => {
   /*===============
          THEMES
     ===============*/
+  const [themeState, setThemeState] = useState("Night");
+  const [languageState, setLanguageState] = useState("Русский");
+
   function changeTheme(
     tileColor: string,
     fontColor: string,
@@ -43,12 +49,18 @@ const SettingsWindow = ({
     return (
       <button
         className='button--theme'
-        onClick={() => changeTheme(
-          theme.tileColor,
-          theme.fontColor,
-          theme.secondFontColor
-        )}
+        onClick={() => {
+          changeTheme(
+            theme.tileColor,
+            theme.fontColor,
+            theme.secondFontColor
+          )
+          setThemeState(theme.name);
+        }
+        }
+        style={themeState === theme.name ? {color: "white"} : {}}
       >
+        <img className='tick' style={themeState === theme.name ? {opacity: '100%'} : {}} src={tick} />
         {theme.name}
       </button>
     );
@@ -97,24 +109,46 @@ const SettingsWindow = ({
     return (
       <button 
         className='button--language'
-        onClick={() => setLanguageIndex(languagesArr.indexOf(lang))}
+        onClick={() => {
+          setLanguageIndex(languagesArr.indexOf(lang));
+          setLanguageState(lang);
+        }}
+        style={languageState === lang ? {color: "white"} : {}}
       >
+        <img style={languageState === lang ? {opacity: '100%'} : {}} className='tick' src={tick} />
         {lang}
       </button>
     );
   })
 
   return (
-    <div className="settings-window">
+    <div className="settings-window" style={
+      isSettingsWindowActive ? 
+        {opacity: "100%", pointerEvents: "all"} 
+      : {}
+    }>
       <p className='heading'>Settings</p>
-      <div className='section'>
-        {languages}
-      </div>
-      <div className='section'>
-        {modifications}
-      </div>
-      <div className='section'>
-        {themes}
+      <div className='settings__panels'>
+        <div className='panels__left-side'>
+          <div className='section section--languages'>
+            <p>Languages</p>
+            <div className='section__scroll'>
+              {languages}
+            </div>
+          </div>
+          <div className='section section--modifications'>
+            <p>Modifications</p>
+            <div className='section__scroll'>
+              {modifications}
+            </div>
+          </div>
+        </div>
+        <div className='section section--themes'>
+          <p>Themes</p>  
+          <div className='section__scroll'>
+            {themes}
+          </div>
+        </div>
       </div>
     </div>
   )

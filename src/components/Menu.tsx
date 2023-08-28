@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../css/App.css';
+import SettingsWindow from './SettingsWindow';
 
 type UIcontrolProps = {
   mode: string; 
@@ -114,12 +115,16 @@ type menuProps = {
   setWordsVariance: (arg: string) => void;
   timeVariance: string;
   setTimeVariance: (arg: string) => void;
+  switchSettingsWindow: (arg: boolean) => void;
+  settingsWindowState: boolean;
 }
   
 const Menu = ({
   mode, 
   setMode,
   setTimeVariance,
+  switchSettingsWindow,
+  settingsWindowState,
   setWordsVariance,
   wordsVariance,
   timeVariance,
@@ -216,7 +221,7 @@ const Menu = ({
         <Mode childMode="Dzen" mode={mode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setMode={setMode} bgClassName='dzen' />
         <Mode childMode="Words" mode={mode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setMode={setMode} bgClassName='words' />
         <Mode childMode="Time" mode={mode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setMode={setMode} bgClassName='time' />
-        <Setting mode={mode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setting="Settings" openSetting={() => {}} bgClassName='settings' />
+        <Setting mode={mode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setting="Settings" openSetting={() => switchSettingsWindow(!settingsWindowState)} bgClassName='settings' />
         <button className='menu__button menu-icon' onMouseLeave={hideDescribe} onMouseOver={() => showDescribe("Menu")} onClick={() => setIsMenuActive(!isMenuActive)} style={isMenuActive ? {opacity: '100'} : {} } />
       </div>
       <div className='menu__description' ref={describeRef}>{currentButton}</div>

@@ -178,10 +178,11 @@ input {
 
 .speed-indicator {
   position: absolute;
+  font-size: 85%;
   text-align: left;
   left: 10%; top: 2%;
   width: fit-content;
-  line-height: 0.4em;
+  line-height: 0.3em;
   color: rgba(255, 255, 255, 0.4)
 }
 
@@ -191,6 +192,52 @@ input {
   height: 100vh;
   backdrop-filter: blur(10px) brightness(50%);
   z-index: 10;
+  display: flex; 
+  justify-content: center;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: .5s;
+}
+
+.settings__panels {
+  height: 65%;
+  margin-bottom: 15%;
+  aspect-ratio: 1/1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.panels__left-side {
+  height: 100%;
+  width: 40%;
+}
+
+.section {
+  margin: 1%;
+}
+
+.section__scroll {
+  height: 80%;
+  width: 100%;
+  display: flex; 
+  overflow-y: scroll;
+  flex-direction: column;
+}
+
+.section--themes {
+  height: 100%;
+  width: 40%;
+}
+
+.section--languages {
+  height: 48%;
+  margin-bottom: 3%;
+}
+
+.section--modifications {
+  height: 49%;
 }
 
 .heading {
@@ -215,4 +262,29 @@ button {
 
 button:hover {
   color: white;
+}
+
+.tick {
+  height: 40%;
+  margin: 1em;
+  opacity: 0%;
+}
+
+.button--language:hover, .button--theme:hover {
+  background-color: white;
+  color: black;
+}
+
+.button--modification {
+  width: fit-content;
+  padding: 0.2em 1em;
+  border-radius: 0.7em;
+  margin: 1%;
+}
+
+.button--theme, .button--language {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 2.5em;
 }

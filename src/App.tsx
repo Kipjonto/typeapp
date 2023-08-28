@@ -10,6 +10,7 @@ const App = () => {
   const [timeVariance, setTimeVariance] = useState("15")
   const [wordsVariance, setWordsVariance] = useState("10");
   const [languageIndex, setLanguageIndex] = useState(0)
+  const [isSettingsWindowActive, setIsSettingsWindowActive] = useState(false);
 
   return (
     <div className="App">
@@ -25,8 +26,11 @@ const App = () => {
         setWordsVariance={setWordsVariance}
         timeVariance={timeVariance}
         setTimeVariance={setTimeVariance}
+        switchSettingsWindow={setIsSettingsWindowActive}
+        settingsWindowState={isSettingsWindowActive}
       />
       <SettingsWindow 
+        isSettingsWindowActive={isSettingsWindowActive}
         setLanguageIndex={setLanguageIndex}
       />
     </div>
