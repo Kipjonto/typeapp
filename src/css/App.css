@@ -38,6 +38,7 @@
   display: flex; align-items: center;
   justify-content: center;
   font-size: 150%;
+  pointer-events: none;
 }
 
 input {
@@ -45,6 +46,17 @@ input {
   width: 100vw; height: 50vh;
   position: absolute; top: 25vh;
   left: 0; z-index: 2;
+}
+
+.button--restart {
+  aspect-ratio: 1;
+  font-size: 1.4em;
+  position: absolute;
+  left: 10%;
+  top: 55%;
+  border-radius: 100%;
+  cursor: pointer;
+  z-index: 10;
 }
 
 @keyframes caret {
@@ -140,6 +152,7 @@ input {
   position: absolute;
   top: 0;
   right: 0;
+  z-index: 20;
   background-color: rgb(17, 13, 47);
   padding: 5px 40px;
 }
@@ -182,8 +195,10 @@ input {
   text-align: left;
   left: 10%; top: 2%;
   width: fit-content;
-  line-height: 0.3em;
-  color: rgba(255, 255, 255, 0.4)
+  line-height: 0.2em;
+  color: rgba(255, 255, 255, 0.4);
+  z-index: 10;
+  pointer-events: none;
 }
 
 

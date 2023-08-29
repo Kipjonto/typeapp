@@ -15,19 +15,24 @@ const Input = ({
   const blurRef = useRef<HTMLDivElement>(null!);
   const textRef = useRef<HTMLDivElement>(null!); 
   const inputRef = useRef<HTMLInputElement>(null!);
+  const intervalRef = useRef<any>(null);
 
   const [progress, setProgress] = useState("0 / 10");
   const [wordsProgress, setWordsProgress] = useState(0);
   const [timeProgress, setTimeProgress] = useState(Number(timeVariance));
 
-  const [result, setResult] = useState(0);
+  const [bestTimeResult, setBestTimeResult] = useState(0);
+  const [prevTimeResult, setPrevTimeResult] = useState(0);
+  const [bestWordsResult, setBestWordsResult] = useState(0);
+  const [prevWordsResult, setPrevWordsResult] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+  const [startTime, setStartTime] = useState(Date.now);
+  const [endTime, setEndTime] = useState(Date.now)
 
   const [string, setString] = useState("");
   const [splitted, setSplitted] = useState(['']);
   const [indToFill, setIndToFill] = useState(1);
   const [passedInputLength, setPassedInputLength] = useState(0);
-
-  let timer: any;
 
   function makeTimePrettier(time: string) {
     let prettierTime = "";
@@ -56,7 +61,10 @@ const Input = ({
     }
     else if (mode === "Time") {
       if (timeProgress < 1) {
-        setProgress(makeTimePrettier('0'));
+        clearInterval(intervalRef.current);
+        setProgress("00:00");
+        setEndTime(Date.now);
+        inputRef.current.blur();
       } else {
         setProgress(makeTimePrettier(timeProgress.toString()));
       }
@@ -73,11 +81,46 @@ const Input = ({
       setWordsProgress(0);
     } 
 
-    clearInterval(timer);
+    clearInterval(intervalRef.current);
   }, [timeVariance, wordsVariance, mode])
 
   const caret = "<font style='color: #FFB02E; margin: 0 -4px; animation: caret 1s infinite'>|</font>";
     
+  function checkResult() {
+    let wpm = 0;
+    let correctColor = "white";
+    let correctChar = 0;
+
+    for (let i = 0; i < indToFill-1; i++) {
+      if (splitted[i] === `<font style="color:${correctColor}">${string[i]}</font>`) {
+        correctChar++;
+      } 
+    }
+
+    wpm = Math.floor(correctChar / ((endTime - startTime) / 1000 / 60) / 5);
+    
+    return wpm;
+  }
+  
+  useEffect(() => {
+    const result = checkResult();
+
+    if (mode === "Time" && !Number.isNaN(result)) {
+      setPrevTimeResult(result);
+
+      if (result > bestTimeResult) {
+        setBestTimeResult(result);
+      }
+    } 
+    else if (!Number.isNaN(result)) {
+      setPrevWordsResult(result);
+      
+      if (result > bestWordsResult) {
+        setBestWordsResult(result);
+      }
+    }
+  }, [endTime])
+
   function handleInput() {
     let index = indToFill;
     let color = "white"; // Succesful case by default 
@@ -99,30 +142,19 @@ const Input = ({
       }
     }
 
-    if (indToFill === 1) {
-      /*----------------
-        start of typing
-      -----------------*/
-      if (mode === "Words") {
-        const start = Date.now();
-
-        setTimeProgress(start);
-      } 
-      else if (mode === "Time") {
-        timer = setInterval(() => {
-          
-          setTimeProgress(time => {
-            return time - 1
-          })
+    if (!isRunning) {      
+      if (mode === "Time") {
+        intervalRef.current = setInterval(()=> {
+          setTimeProgress(time => time - 1);
         }, 1000)
       }
+      setStartTime(Date.now);
+      setIsRunning(true);
     } 
 
     else if (wordsProgress.toString() == wordsVariance && mode === "Words") {
-      /*-----------------
-         end of typing   
-      ------------------*/
       inputRef.current.blur();
+      setEndTime(Date.now);
     }
 
     if (currentInputLength > passedInputLength) {
@@ -158,13 +190,12 @@ const Input = ({
   }
 
   function composeString() {
-    /* TODO: to make generation dependence on 
-    *  vocabulary
-    */
-    
     setString('');
     setPassedInputLength(0);
     setIndToFill(1);
+    setIsRunning(false);
+    setWordsProgress(0);
+    setTimeProgress(Number(timeVariance))
     
     let copy = '';
 
@@ -196,15 +227,21 @@ const Input = ({
   return (
     <>
       <div className='speed-indicator'>
-        <p>Last: 0wpm</p>
-        <p>Best: 0wpm</p>
         <p>Mode: {mode}</p>
-        <p>{
+        <p style={mode === "Dzen" ? {display: "none"} : {}}>{
           mode === "Time" ? 
             "Variance: " + timeVariance + 's'
-          : mode === "Words" ?
-            "Variance: " + wordsVariance
-          : ''
+          : "Variance: " + wordsVariance
+        }</p>
+        <p style={mode === "Dzen" ? {display: "none"} : {}}>Last: {
+          mode === "Time" ?
+            prevTimeResult + "wpm"
+          : prevWordsResult + "wpm"
+        }</p>
+        <p style={mode === "Dzen" ? {display: "none"} : {}}>Best: {
+          mode === "Time" ?
+            bestTimeResult + "wpm"
+          : bestWordsResult + "wpm"
         }</p>
       </div>
       <div 
@@ -227,6 +264,7 @@ const Input = ({
         onChange={handleInput}
         autoFocus 
       />
+      <button className='button--restart' onClick={composeString}>&#x21bb;</button>
       <div className='text' ref={textRef} />
     </>
   );
