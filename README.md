@@ -8,7 +8,7 @@ Here is a lot of customization to make typing true flexible and reach higher sco
 ### `Installation`
 * Install Node Package Manager (npm)
 * Download this project
-* Choose this project using `cd %LOCAL_PATH%/typeapp` in your console
+* Choose this project using `cd %LOCAL_PATH%\typeapp` in your console
 * Run `npm install` console command to install npm dependences
 * Run `npm start` console command to launch a local server
 * Enjoy!
