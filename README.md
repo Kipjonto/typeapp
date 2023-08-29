@@ -2,7 +2,7 @@
 Improve, control and enjoy typing! <br><br>
 
 In this app you can imrove your typing skills by trainings on different modes, variances and languages. \
-Here is a lot of customization to make typing true flexible and reach higher scores. \
+Here is a lot of customization to make typing true flexible and reach higher scores. 
 
 
 ### `Installation`
