@@ -53,7 +53,7 @@ const Input = ({
   const [splitted, setSplitted] = useState(['']);
   const [indToFill, setIndToFill] = useState(1);
   const [passedInputLength, setPassedInputLength] = useState(0);
-
+  const [translateX, setTranslateX] = useState(0);
 
   const changeProgress = useEffect(() => {
     if (mode === "Words") {
@@ -86,7 +86,7 @@ const Input = ({
     clearInterval(intervalRef.current);
   }, [timeVariance, wordsVariance, mode])
 
-  const caret = "<font style='color: #FFB02E; margin: 0 -4px; animation: caret 1s infinite'>|</font>";
+  const caret = "<font style='color: #FFB02E; margin: 0 -7px; animation: caret 1s infinite'>|</font>";
     
   function checkResult() {
     let wpm = 0;
@@ -123,6 +123,10 @@ const Input = ({
     }
   }, [endTime])
 
+  useEffect(()=>{
+    textRef.current.style.left = `-${translateX}px`;
+  }, [translateX])
+
   function handleInput() {
     let index = indToFill;
     let color = "white"; 
@@ -138,10 +142,7 @@ const Input = ({
       [splitted[firstSwapEl], splitted[secondSwapEl]] = [splitted[secondSwapEl], splitted[firstSwapEl]];
 
       setIndToFill(incrementValue);
-
-      if (indToFill > 10) {
-        textRef.current.scrollBy(strMovementDist, 0);
-      }
+      setTranslateX(dist => dist += strMovementDist)
     }
 
     if (!isRunning) {      
@@ -167,7 +168,7 @@ const Input = ({
         }
       }
 
-      fillSymbolAndMoveCaret(indToFill, indToFill-1, indToFill+1, 10);
+      fillSymbolAndMoveCaret(indToFill, indToFill-1, indToFill+1, 17);
     } 
     else if (indToFill > 1) {
       if (mode === "Words" && string[indToFill-2] === ' ') {
@@ -178,7 +179,7 @@ const Input = ({
       symbol = string[indToFill-2];
       index = indToFill-2;
 
-      fillSymbolAndMoveCaret(indToFill-2, indToFill-1, indToFill-1, -10);
+      fillSymbolAndMoveCaret(indToFill-2, indToFill-1, indToFill-1, -17);
     }
         
     setPassedInputLength(inputRef.current.value.length);
@@ -192,7 +193,8 @@ const Input = ({
     setIsRunning(false);
     setWordsProgress(0);
     setTimeProgress(Number(timeVariance));
-    textRef.current.scrollTo(0, 0);
+    setTranslateX(0);
+    inputRef.current.value = '';
 
     let copy = '';
     for (let i = 0; i < 30; i++) {
@@ -259,9 +261,10 @@ const Input = ({
         onChange={handleInput}
         autoFocus 
       />
-      <div className='shadow' />
+      <div className='shadow shadow--left' />
+      <div className='shadow shadow--right' />
       <button className='button--restart' onClick={composeString}>&#x21bb;</button>
-      <div className='text' ref={textRef} />
+      <code className='text' ref={textRef} />
     </>
   );
 }

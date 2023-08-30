@@ -5,26 +5,27 @@
   background-color: rgb(0, 0, 24);
   color: white;
   font-size: 100%;
-  font-family: Tahoma, Verdana, sans-serif;
   display: flex; align-items: center;
   justify-content: center;
   margin: 0 0;
   overflow: hidden;
+  font-family: monospace;
 }
 
 .text {
-  font-size: 170%;
+  font-size: 2em;
+  transition: 0.25s;
   overflow: hidden;
   white-space: pre;
   cursor: default;
+  padding: 0 15%;
   position: absolute;
-  left: 10vw;
   pointer-events: none;
   height: 100vh;
   top: 0;
   display: flex; align-items: center;
   justify-content: left;
-  width: 90vw;
+  width: fit-content;
   text-align: left;
   color: rgba(255, 255, 255, 0.401);
   scroll-behavior: smooth;
@@ -32,13 +33,22 @@
 
 .shadow {
   position: absolute;
-  width: 100vh;
+  width: 16%;
   height: 100vh;
   top: 0;
-  right: 0;
   z-index: 5;
   pointer-events: none;
+}
+
+.shadow--right {
+  right: -1%;
+  width: 30%;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgb(0, 0, 24));
+}
+
+.shadow--left {
+  left: -1%;
+  background: linear-gradient(90deg,rgb(0, 0, 24), rgba(255, 255, 255, 0) );
 }
 
 .blur-message {
@@ -64,7 +74,7 @@ input {
   aspect-ratio: 1;
   font-size: 1.4em;
   position: absolute;
-  left: 10%;
+  left: 15%;
   top: 55%;
   border-radius: 100%;
   cursor: pointer;
@@ -82,7 +92,7 @@ input {
 .menu__outer {
   display: flex; align-items: center;
   justify-content: end;
-  right: 10%;
+  right: 15%;
   z-index: 9999;
   width: 100vw; height: 35vh;
   position: absolute;
@@ -106,12 +116,12 @@ input {
   justify-content: end;
   height: 30%;
   opacity: 0;
-  font-size: 100%;
+  font-size: 150%;
   pointer-events: none;
   transition: .3s;
   width: 100%;
   text-align: right;
-  padding-right: 3%;
+  padding-right: 1%;
 }
 
 .menu__button {
@@ -144,7 +154,7 @@ input {
   transition: .3s;
   align-items: center;
   justify-content: start;
-  left: 10%;
+  left: 15%;
   top: -5%;
 }
 
@@ -191,9 +201,9 @@ input {
 
 .speed-indicator {
   position: absolute;
-  font-size: 85%;
+  font-size: 100%;
   text-align: left;
-  left: 10%; top: 2%;
+  left: 15%; top: 2%;
   width: fit-content;
   line-height: 0.2em;
   color: rgba(255, 255, 255, 0.4);
