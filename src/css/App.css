@@ -27,6 +27,18 @@
   width: 90vw;
   text-align: left;
   color: rgba(255, 255, 255, 0.401);
+  scroll-behavior: smooth;
+}
+
+.shadow {
+  position: absolute;
+  width: 100vh;
+  height: 100vh;
+  top: 0;
+  right: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgb(0, 0, 24));
 }
 
 .blur-message {
@@ -34,7 +46,7 @@
   backdrop-filter: blur(10px);
   transition: .5s; 
   height: 100%; width: 100%;
-  cursor: default; z-index: 1;
+  cursor: default; z-index: 10;
   display: flex; align-items: center;
   justify-content: center;
   font-size: 150%;
@@ -145,18 +157,6 @@ input {
   opacity: 0;
 }
 
-.result-message {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 20;
-  background-color: rgb(17, 13, 47);
-  padding: 5px 40px;
-}
-
 .menu-icon {
   background-image: url(../img/menu-img.png);
   background-size: 40%;
@@ -197,7 +197,7 @@ input {
   width: fit-content;
   line-height: 0.2em;
   color: rgba(255, 255, 255, 0.4);
-  z-index: 10;
+  z-index: 15;
   pointer-events: none;
 }
 
@@ -237,7 +237,6 @@ input {
   height: 80%;
   width: 100%;
   display: flex; 
-  overflow-y: scroll;
   flex-direction: column;
 }
 
@@ -265,6 +264,7 @@ input {
   display: flex; align-items: center;
   justify-content: center;
   flex-direction: column;
+  overflow: hidden;
 }
 
 button {

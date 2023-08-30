@@ -1,5 +1,25 @@
-import React, { useState, useRef, useEffect, Ref } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import '../css/App.css';
+
+function makeTimePrettier(time: string) {
+  let prettierTime = "";
+
+  let minutes = Math.floor(parseInt(time) / 60); 
+  if (minutes > 9) {
+    prettierTime += `${minutes}:`;
+  } else {
+    prettierTime += `0${minutes}:`;
+  }
+  
+  let seconds = Math.floor(parseInt(time) % 60);
+  if (seconds > 9) {
+    prettierTime += `${seconds}`;
+  } else {
+    prettierTime += `0${seconds}`;
+  }
+
+  return prettierTime;
+}
 
 type inputProps = {
   mode: string;
@@ -34,39 +54,21 @@ const Input = ({
   const [indToFill, setIndToFill] = useState(1);
   const [passedInputLength, setPassedInputLength] = useState(0);
 
-  function makeTimePrettier(time: string) {
-    let prettierTime = "";
-
-    let minutes = Math.floor(parseInt(time) / 60);
-    let seconds = Math.floor(parseInt(time) % 60);
-
-    if (minutes > 9) {
-      prettierTime += `${minutes}:`;
-    } else {
-      prettierTime += `0${minutes}:`;
-    }
-
-    if (seconds > 9) {
-      prettierTime += `${seconds}`;
-    } else {
-      prettierTime += `0${seconds}`;
-    }
-
-    return prettierTime;
-  }
 
   const changeProgress = useEffect(() => {
     if (mode === "Words") {
       setProgress(wordsProgress + " / " + wordsVariance);
-    }
-    else if (mode === "Time") {
-      if (timeProgress < 1) {
-        clearInterval(intervalRef.current);
-        setProgress("00:00");
+      if (wordsProgress === Number(wordsVariance)) {
         setEndTime(Date.now);
         inputRef.current.blur();
-      } else {
-        setProgress(makeTimePrettier(timeProgress.toString()));
+      }
+    }
+    else if (mode === "Time") {
+      setProgress(makeTimePrettier(timeProgress.toString()));
+      if (timeProgress < 1) {
+        clearInterval(intervalRef.current);
+        setEndTime(Date.now);
+        inputRef.current.blur();
       }
     }
   }, [mode, timeProgress, wordsProgress, wordsVariance]);
@@ -123,7 +125,7 @@ const Input = ({
 
   function handleInput() {
     let index = indToFill;
-    let color = "white"; // Succesful case by default 
+    let color = "white"; 
     let symbol = string[indToFill-1];
     let currentInputLength = inputRef.current.value.length;
     
@@ -152,11 +154,6 @@ const Input = ({
       setIsRunning(true);
     } 
 
-    else if (wordsProgress.toString() == wordsVariance && mode === "Words") {
-      inputRef.current.blur();
-      setEndTime(Date.now);
-    }
-
     if (currentInputLength > passedInputLength) {
       if (mode === "Words" && string[indToFill-1] === ' ') {
         setWordsProgress(prev => prev + 1);
@@ -171,7 +168,6 @@ const Input = ({
       }
 
       fillSymbolAndMoveCaret(indToFill, indToFill-1, indToFill+1, 10);
-
     } 
     else if (indToFill > 1) {
       if (mode === "Words" && string[indToFill-2] === ' ') {
@@ -195,15 +191,15 @@ const Input = ({
     setIndToFill(1);
     setIsRunning(false);
     setWordsProgress(0);
-    setTimeProgress(Number(timeVariance))
-    
-    let copy = '';
+    setTimeProgress(Number(timeVariance));
+    textRef.current.scrollTo(0, 0);
 
+    let copy = '';
     for (let i = 0; i < 30; i++) {
       copy += 'hello ';
     }
-
     setString(copy);
+
     let copySplitted = copy.split('');
     copySplitted.unshift(caret);
     setSplitted(copySplitted);
@@ -213,7 +209,6 @@ const Input = ({
     textRef.current.innerHTML = splitted.join('');
   },[splitted])
 
-  // By the first render
   useEffect(composeString, [mode, wordsVariance, timeVariance]);
   
   function showMessage() {
@@ -264,6 +259,7 @@ const Input = ({
         onChange={handleInput}
         autoFocus 
       />
+      <div className='shadow' />
       <button className='button--restart' onClick={composeString}>&#x21bb;</button>
       <div className='text' ref={textRef} />
     </>

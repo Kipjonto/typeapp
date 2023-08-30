@@ -10,9 +10,6 @@ const SettingsWindow = ({
   setLanguageIndex,
   isSettingsWindowActive
 }: SettingsProps) => {
-  /*===============
-         THEMES
-    ===============*/
   const [themeState, setThemeState] = useState("Night");
   const [languageState, setLanguageState] = useState("Русский");
 
@@ -66,9 +63,6 @@ const SettingsWindow = ({
     );
   })
 
-  /*===============
-     MODIFICATIONS
-    ===============*/
   const modificationsArr = [
     {
       name: "Blindness", 
@@ -95,9 +89,6 @@ const SettingsWindow = ({
     );
   })
 
-  /*===============
-       LANGUAGES
-    ===============*/
   const languagesArr = [
     "Русский",
     "English",
