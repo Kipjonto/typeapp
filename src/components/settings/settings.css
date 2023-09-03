@@ -40,8 +40,9 @@
 
 .scroll--modifications {
   flex-direction: row;
-  align-items: flex-start;
+  align-content: flex-start;
   flex-wrap: wrap;
+  row-gap: 0.5em;
 }
 
 .section--themes {
