@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import '../css/App.css';
+import "./input.css";
 
 function makeTimePrettier(time: string) {
   let prettierTime = "";
@@ -90,11 +90,11 @@ const Input = ({
     
   function checkResult() {
     let wpm = 0;
-    let correctColor = "white";
+    let correctColor = "filled-font-color";
     let correctChar = 0;
 
     for (let i = 0; i < indToFill-1; i++) {
-      if (splitted[i] === `<font style="color:${correctColor}">${string[i]}</font>`) {
+      if (splitted[i] === `<font style="color:var(--${correctColor})">${string[i]}</font>`) {
         correctChar++;
       } 
     }
@@ -129,7 +129,7 @@ const Input = ({
 
   function handleInput() {
     let index = indToFill;
-    let color = "white"; 
+    let color = "filled"; 
     let symbol = string[indToFill-1];
     let currentInputLength = inputRef.current.value.length;
     
@@ -137,7 +137,7 @@ const Input = ({
                                     secondSwapEl: number, 
                                     incrementValue: number, 
                                     strMovementDist: number) {
-      splitted[index] = `<font style="color:${color}">${symbol}</font>`;
+      splitted[index] = `<font style="color:var(--${color}-font-color)">${symbol}</font>`;
 
       [splitted[firstSwapEl], splitted[secondSwapEl]] = [splitted[secondSwapEl], splitted[firstSwapEl]];
 
@@ -161,25 +161,25 @@ const Input = ({
       }
 
       if (inputRef.current.value.at(-1) !== string[indToFill-1]) {
-        color = "red";
+        color = "uncorrect";
         
         if (string[indToFill-1] == ' ') {
           symbol = inputRef.current.value.at(-1)!;
         }
       }
 
-      fillSymbolAndMoveCaret(indToFill, indToFill-1, indToFill+1, 17);
+      fillSymbolAndMoveCaret(indToFill, indToFill-1, indToFill+1, 18.7);
     } 
     else if (indToFill > 1) {
       if (mode === "Words" && string[indToFill-2] === ' ') {
         setWordsProgress(prev => prev - 1);
       }
 
-      color = "color:rgba(255, 255, 255, 0.401)";
+      color = "unfilled";
       symbol = string[indToFill-2];
       index = indToFill-2;
 
-      fillSymbolAndMoveCaret(indToFill-2, indToFill-1, indToFill-1, -17);
+      fillSymbolAndMoveCaret(indToFill-2, indToFill-1, indToFill-1, -18.7);
     }
         
     setPassedInputLength(inputRef.current.value.length);

@@ -1,6 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import '../css/App.css';
-import SettingsWindow from './SettingsWindow';
+import { useState, useRef } from 'react';
+import "./menu.css";
 
 type UIcontrolProps = {
   mode: string; 
@@ -8,7 +7,6 @@ type UIcontrolProps = {
   showDescribe: (arg: string) => void;
   hideDescribe: () => void; 
 }
-
 
 type settingProps = UIcontrolProps & {
   openSetting: () => void;
@@ -88,7 +86,7 @@ const Variance = ({
   hideDescribe,
   mode,
   childMode,
-  isMenuActive,
+  isMenuActive
 } : varianceProps) => {
   return (
     <button
@@ -101,7 +99,8 @@ const Variance = ({
           varianceState == variance ?
             {opacity: "100%"}
           : {}
-        : {opacity: "0%", pointerEvents: "none"}} 
+        : {opacity: "0%", pointerEvents: "none"}
+      } 
     >
       {variance}
     </button>
@@ -143,8 +142,8 @@ const Menu = ({
   }
   
   return (
-    <div className='menu__outer'>
-      <div className='menu__buttons-panel'>
+    <>
+      <div className='menu__buttons-panel buttons-panel--lvl3'  style={settingsWindowState ? {pointerEvents: "none", opacity: '0%'} : {}}>
         <Variance 
           variance="50" 
           childMode="Words" 
@@ -168,7 +167,7 @@ const Menu = ({
         <div className='menu__button button--non-active' />
         <div className='menu__button button--non-active' />
       </div>
-      <div className='menu__buttons-panel'>
+      <div className='menu__buttons-panel buttons-panel--lvl2' style={settingsWindowState ? {pointerEvents: "none", opacity: '0%'} : {}}>
         <Variance 
           variance="25" 
           childMode="Words" 
@@ -177,7 +176,7 @@ const Menu = ({
           isMenuActive={isMenuActive} 
           mode={mode} 
           showDescribe={showDescribe} 
-          hideDescribe={hideDescribe}  
+          hideDescribe={hideDescribe}
         />
         <Variance 
           variance="30" 
@@ -192,7 +191,7 @@ const Menu = ({
         <div className='menu__button button--non-active' />
         <div className='menu__button button--non-active' />
       </div>
-      <div className='menu__buttons-panel'>
+      <div className='menu__buttons-panel buttons-panel--lvl1'  style={settingsWindowState ? {pointerEvents: "none", opacity: '0%'} : {}}>
         <Variance 
           variance="10" 
           childMode="Words" 
@@ -216,7 +215,7 @@ const Menu = ({
         <div className='menu__button button--non-active' />
         <div className='menu__button button--non-active' />
       </div>
-      <div className='menu__buttons-panel'>
+      <div className='menu__buttons-panel buttons-panel--lvl0'>
         <Setting mode={mode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setting="Score" openSetting={() => {}} bgClassName='scores' />
         <Mode childMode="Dzen" mode={mode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setMode={setMode} bgClassName='dzen' />
         <Mode childMode="Words" mode={mode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setMode={setMode} bgClassName='words' />
@@ -225,7 +224,7 @@ const Menu = ({
         <button className='menu__button menu-icon' onMouseLeave={hideDescribe} onMouseOver={() => showDescribe("Menu")} onClick={() => setIsMenuActive(!isMenuActive)} style={isMenuActive ? {opacity: '100'} : {} } />
       </div>
       <div className='menu__description' ref={describeRef}>{currentButton}</div>
-    </div>
+    </>
   );
 }
 

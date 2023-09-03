@@ -1,0 +1,101 @@
+
+.menu__buttons-panel {
+  position: absolute;
+  right: 15%;
+  height: 3.5em;
+  width: 100vw;
+}
+
+.menu__button {
+  border-radius: 100%;
+  background-position: center;
+  opacity: 40%;
+  border: none;
+  color: var(--filled-font-color);
+  background-repeat: no-repeat;
+  background-color: rgba(255, 255, 255, 0);
+  height: 100%; aspect-ratio: 1;
+  transition: .3s;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-position: center center;
+  margin: 0.5em;
+}
+
+.buttons-panel--lvl0 {
+  bottom: 3em;
+  z-index: 9999;
+}
+
+.buttons-panel--lvl1 {
+  bottom: 7em;
+  z-index: 10;
+}
+
+.buttons-panel--lvl2 {
+  bottom: 10em;
+  z-index: 10;
+}
+
+.buttons-panel--lvl3 {
+  bottom: 13em;
+  z-index: 10;
+}
+
+.menu__button:hover {
+  opacity: 100%;
+}
+
+.button--non-active {
+  pointer-events: none;
+  opacity: 0;
+}
+
+.menu-icon {
+  background-image: url(/src/img/menu-img.png);
+  background-size: 40%;
+  border: 3px solid white;
+  opacity: 40%;
+}
+
+.dzen {
+  background-image: url(/src/img/inf-img.png);
+  background-size: 60%;
+}
+
+.words {
+  background-image: url(/src/img/words-img.png);
+  background-size: 40%;
+}
+
+.time {
+  background-image: url(/src/img/time-img.png);
+  background-size: 30%;
+}
+
+.scores {
+  background-image: url(/src/img/crown-img.png);
+  background-size: 60%;
+}
+
+.settings {
+  background-image: url(/src/img/settings-img.png);
+  background-size: 45%;
+}
+
+.menu__buttons-panel {
+  height: 3em;
+  margin-bottom: 0.2em;
+  display: flex;
+  justify-content: end;
+  width: 100%;
+  align-items: center;
+}
+
+.menu__description {
+  position: absolute;
+  bottom: 0.8em;
+  right: 16%;
+  z-index: 9999;
+  font-size: 1.3em;
+}

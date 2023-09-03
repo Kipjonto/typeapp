@@ -1,15 +1,13 @@
 import { useState } from 'react';
-import Input from './components/Input';
-import Menu from './components/Menu';
-import SettingsWindow from './components/SettingsWindow';
-
+import Input from './components/input/Input';
+import Menu from './components/menu/Menu';
+import SettingsWindow from './components/settings/Settings';
+import "./App.css";
 
 const App = () => {
-  // Input modificators
   const [mode, setMode] = useState("Words");
   const [timeVariance, setTimeVariance] = useState("15")
   const [wordsVariance, setWordsVariance] = useState("10");
-  const [languageIndex, setLanguageIndex] = useState(0)
   const [isSettingsWindowActive, setIsSettingsWindowActive] = useState(false);
 
   return (
@@ -31,7 +29,6 @@ const App = () => {
       />
       <SettingsWindow 
         isSettingsWindowActive={isSettingsWindowActive}
-        setLanguageIndex={setLanguageIndex}
       />
     </div>
   );

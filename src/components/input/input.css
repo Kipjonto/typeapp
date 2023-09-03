@@ -1,0 +1,101 @@
+.text {
+  font-size: 34px;
+  transition: 0.25s;
+  overflow: hidden;
+  white-space: pre;
+  cursor: default;
+  padding: 0 15%;
+  position: absolute;
+  pointer-events: none;
+  height: 100vh;
+  top: 0;
+  display: flex; align-items: center;
+  justify-content: left;
+  width: fit-content;
+  text-align: left;
+  color: var(--unfilled-font-color);
+  scroll-behavior: smooth;
+}
+
+.shadow {
+  position: absolute;
+  width: 16%;
+  height: 100vh;
+  top: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.shadow--right {
+  right: -1%;
+  width: 30%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), var(--bg-color));
+}
+
+.shadow--left {
+  left: -1%;
+  background: linear-gradient(90deg,var(--bg-color), rgba(255, 255, 255, 0) );
+}
+
+.blur-message {
+  position: absolute; top: 0; left: 0;
+  backdrop-filter: blur(10px);
+  transition: .5s; 
+  height: 100%; width: 100%;
+  cursor: default; z-index: 10;
+  display: flex; align-items: center;
+  justify-content: center;
+  font-size: 150%;
+  pointer-events: none;
+}
+
+input {
+  opacity: 0; cursor: default;
+  width: 100vw; height: 50vh;
+  position: absolute; top: 25vh;
+  left: 0; z-index: 2;
+}
+
+.button--restart {
+  aspect-ratio: 1;
+  font-size: 1.4em;
+  position: absolute;
+  background-color: var(--bg-color);
+  left: 15%;
+  top: 55%;
+  border-radius: 100%;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.progress {
+  color: var(--unfilled-font-color);
+  height: 100vh; width: 100vw;
+  font-size: 150%;
+  position: absolute;
+  pointer-events: none;
+  display: flex;
+  transition: .3s;
+  align-items: center;
+  justify-content: start;
+  left: 15%;
+  top: -5%;
+}
+
+.speed-indicator {
+  position: absolute;
+  font-size: 100%;
+  text-align: left;
+  left: 15%; top: 2%;
+  width: fit-content;
+  line-height: 0.2em;
+  color: var(--unfilled-font-color);
+  z-index: 15;
+  pointer-events: none;
+}
+
+@keyframes caret {
+  0% { opacity: 100% }
+  50% { opacity: 0% }
+  100% { opacity: 100% }
+}

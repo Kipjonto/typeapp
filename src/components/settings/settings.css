@@ -1,0 +1,127 @@
+.settings-window {
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px) brightness(50%);
+  z-index: 20;
+  display: flex; 
+  justify-content: center;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: .5s;
+}
+
+.settings__panels {
+  height: 65%;
+  margin-bottom: 15%;
+  aspect-ratio: 1/1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.panels__left-side {
+  height: 100%;
+  width: 40%;
+}
+
+.section {
+  margin: 1%;
+  color: var(--unfilled-font-color);
+}
+
+.section__scroll {
+  height: 80%;
+  width: 100%;
+  display: flex; 
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.scroll--modifications {
+  flex-direction: row;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.section--themes {
+  height: 100%;
+  width: 40%;
+}
+
+.section--languages {
+  height: 48%;
+  margin-bottom: 3%;
+}
+
+.section--modifications {
+  height: 49%;
+}
+
+.heading {
+  font-size: 200%;
+}
+
+.section {
+  background-color: var(--bg-color);
+  border-radius: 1em;
+  display: flex; align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.tick {
+  height: 40%;
+  margin: 1em;
+  opacity: 0%;
+}
+
+.button--language:hover, .button--theme:hover {
+  background-color: var(--filled-font-color);
+  color: var(--bg-color);
+}
+
+.button--modification {
+  width: fit-content;
+  padding: 0.2em 1em;
+  border-radius: 0.7em;
+  margin: 0% 1%;
+  color: var(--unfilled-font-color);
+  border: 2px solid var(--unfilled-font-color)
+}
+
+.button--modification:hover {
+  background-color: var(--filled-font-color);
+  border: 2px solid var(--filled-font-color);
+  color: var(--bg-color)
+}
+
+.button--language {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 2.5em;
+}
+
+.button--theme {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 2.5em;
+}
+
+.theme__palet {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 4em;
+  height: 60%;
+  border-radius: 1em;
+}
+
+.palet__color {
+  height: 75%;
+  aspect-ratio: 1;
+  border-radius: 100%;
+}
