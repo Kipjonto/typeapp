@@ -1,6 +1,10 @@
+:root {
+  --smoothness: "0.25s";
+}
+
 .text {
   font-size: 34px;
-  transition: 0.25s;
+  transition: var(--smoothness);
   overflow: hidden;
   white-space: pre;
   cursor: default;
@@ -14,7 +18,6 @@
   width: fit-content;
   text-align: left;
   color: var(--unfilled-font-color);
-  scroll-behavior: smooth;
 }
 
 .shadow {

@@ -46,6 +46,15 @@
   opacity: 100%;
 }
 
+.variance {
+  opacity: 100%;
+  color: var(--unfilled-font-color)
+}
+
+.variance:hover {
+  color: var(--filled-font-color)
+}
+
 .button--non-active {
   pointer-events: none;
   opacity: 0;
@@ -73,9 +82,12 @@
   background-size: 30%;
 }
 
-.scores {
-  background-image: url(/src/img/crown-img.png);
-  background-size: 60%;
+.tick {
+  background-image: url(/src/img/tick-img.png);
+  background-position: center;
+  background-size: cover;
+  height: 80%;
+  aspect-ratio: 1;
 }
 
 .settings {

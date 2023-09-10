@@ -90,14 +90,14 @@ const Variance = ({
 } : varianceProps) => {
   return (
     <button
-      className="menu__button modes" 
+      className="menu__button variance" 
       onClick={() => setVariance(variance)}
       onMouseOver={() => showDescribe(childMode + ' mode / ' + variance)}
       onMouseLeave={hideDescribe}
       style={
         isMenuActive && childMode == mode ?
           varianceState == variance ?
-            {opacity: "100%"}
+            {color: "var(--filled-font-color)"}
           : {}
         : {opacity: "0%", pointerEvents: "none"}
       } 
@@ -216,7 +216,6 @@ const Menu = ({
         <div className='menu__button button--non-active' />
       </div>
       <div className='menu__buttons-panel buttons-panel--lvl0'>
-        <Setting mode={mode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setting="Score" openSetting={() => {}} bgClassName='scores' />
         <Mode childMode="Dzen" mode={mode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setMode={setMode} bgClassName='dzen' />
         <Mode childMode="Words" mode={mode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setMode={setMode} bgClassName='words' />
         <Mode childMode="Time" mode={mode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setMode={setMode} bgClassName='time' />

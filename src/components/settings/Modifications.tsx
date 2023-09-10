@@ -1,36 +1,103 @@
-const modifications = [
-  {
-    name: "Blindness", 
-    function: () => {}
-  },
-  {
-    name: "Punctuation",
-    function: () => {}
-  },
-  {
-    name: "Numbers",
-    function: () => {}
-  },
-  {
-    name: "Daltonism", 
-    function: () => {}
-  },
-  {
-    name: "Capital",
-    function: () => {}
-  },
-  {
-    name: "Smooth",
-    function: () => {}
-  }
-];
+import { useEffect, useState } from 'react';
+import themes from './themes-list';
 
-const Modifications = () => {
+type modificationProps = {
+  themeInd: number;
+  punctuation: boolean;
+  setPunctuation: (arg: boolean) => void;
+  numbers: boolean;
+  setNumbers: (arg: boolean) => void;
+  capital: boolean;
+  setCapital: (arg: boolean) => void;
+}
+
+const Modifications = ({
+  themeInd,
+  punctuation,
+  setPunctuation,
+  numbers,
+  setNumbers,
+  capital,
+  setCapital,
+}: modificationProps) => {
+  const [blindness, setBlindness] = useState(false);
+  const [smooth, setSmooth] = useState(true);
+  
+  const modifications = [
+    {
+      name: "Blindness", 
+      state: blindness,
+      switch: setBlindness,
+    },
+    {
+      name: "Punctuation",
+      state: punctuation,
+      switch: setPunctuation,
+    },
+    {
+      name: "Numbers",
+      state: numbers,
+      switch: setNumbers,
+    },
+    {
+      name: "Capital",
+      state: capital,
+      switch: setCapital,
+    },
+    {
+      name: "Smooth",
+      state: smooth,
+      switch: setSmooth,
+    } 
+  ];
+
+  const styles = document.documentElement.style;
+
+  useEffect(()=>{
+    if (smooth) {
+      styles.setProperty('--smoothness', '0.25s');
+    }
+    else {
+      styles.setProperty('--smoothness', '0s');
+    }
+  }, [smooth]);
+
+  useEffect(()=>{
+    if (blindness) {
+      styles.setProperty('--uncorrect-font-color', themes[themeInd].filledFontColor);
+    }
+    else {
+      styles.setProperty('--uncorrect-font-color', themes[themeInd].uncorrectFontColor);
+    }
+  }, [blindness]);
+
+  useEffect(()=>{
+    console.log(1)
+
+  }, [punctuation]);
+
+  useEffect(()=>{
+    console.log(1)
+
+  }, [numbers]);
+
+  useEffect(()=>{
+    console.log(1)
+
+  }, [capital]);
+
   const modificationList = modifications.map(mode => {
     return (
       <button 
         className='button--modification'
-        onClick={() => mode.function}
+        style={
+          mode.state ?
+            { backgroundColor: "var(--filled-font-color)", 
+              color: "var(--bg-color)", 
+              border: "2px solid var(--filled-font-color)" }
+          : {}
+        }
+        onClick={() => mode.switch(!mode.state)}
       >
         {mode.name}
       </button>

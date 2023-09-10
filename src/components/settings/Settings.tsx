@@ -5,10 +5,30 @@ import "./settings.css";
 
 type SettingsProps = {
   isSettingsWindowActive: boolean;
+  languageIndex: number;
+  setLanguageIndex: (ind: number) => void;
+  themeIndex: number;
+  setThemeIndex: (ind: number) => void;
+  punctuation: boolean;
+  setPunctuation: (arg: boolean) => void;
+  numbers: boolean;
+  setNumbers: (arg: boolean) => void;
+  capital: boolean;
+  setCapital: (arg: boolean) => void;
 }
 
 const Settings = ({
-  isSettingsWindowActive
+  isSettingsWindowActive,
+  languageIndex,
+  setLanguageIndex,
+  themeIndex,
+  setThemeIndex,
+  punctuation,
+  setPunctuation,
+  numbers,
+  setNumbers,
+  capital,
+  setCapital,
 }: SettingsProps) => {
   return (
     <div 
@@ -22,10 +42,18 @@ const Settings = ({
       <p className='heading'>Settings</p>
       <div className='settings__panels'>
         <div className='panels__left-side'>
-          <Languages />
-          <Modifications />
+          <Languages languageIndex={languageIndex} setLanguageIndex={setLanguageIndex} />
+          <Modifications 
+            themeInd={themeIndex}
+            punctuation={punctuation}
+            setPunctuation={setPunctuation}
+            numbers={numbers}
+            setNumbers={setNumbers}
+            capital={capital}
+            setCapital={setCapital} 
+          />
         </div>
-        <Themes />
+        <Themes themeIndex={themeIndex} setThemeIndex={setThemeIndex} />
       </div>
     </div>
   )

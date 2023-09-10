@@ -8,17 +8,23 @@ const languages = [
   "C++"
 ];
 
-const Languages = () => {
-  const [language, setLanguage] = useState("Русский");
+type languageProps = {
+  languageIndex: number;
+  setLanguageIndex: (ind: number) => void;
+}
 
+const Languages = ({ 
+  languageIndex,
+  setLanguageIndex 
+}: languageProps) => {
   const languageList = languages.map(lang => {
     return (
       <button
         className='button--language'
-        onClick={() => setLanguage(lang)}
-        style={language === lang ? {color: "white"} : {}}
+        onClick={() => setLanguageIndex(languages.indexOf(lang))}
+        style={languageIndex === languages.indexOf(lang) ? {color: "var(--filled-font-color)", pointerEvents: "none"} : {}}
       >
-        <div style={language === lang ? {opacity: '100%'} : {}} className='tick' />
+        <div style={languageIndex === languages.indexOf(lang) ? {opacity: '100%'} : {}} className='tick' />
         {lang}
       </button>
     );

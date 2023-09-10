@@ -1,5 +1,22 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import "./input.css";
+import russianWords from '../settings/languages/russian';
+import englishWords from '../settings/languages/english';
+import jsWords from '../settings/languages/java-script';
+import cppWords from '../settings/languages/cplusplus';
+import pythonWords from '../settings/languages/python';
+
+const dictionary = [
+  russianWords,
+  englishWords,
+  jsWords,
+  pythonWords,
+  cppWords,
+]
+
+function randint(max: number) {
+  return Math.floor(Math.random() * max);
+}
 
 function makeTimePrettier(time: string) {
   let prettierTime = "";
@@ -25,12 +42,20 @@ type inputProps = {
   mode: string;
   wordsVariance: string;
   timeVariance: string;
+  languageIndex: number;
+  numbers: boolean;
+  punctuation: boolean;
+  capital: boolean;
 }
 
 const Input = ({
   mode,
   wordsVariance,
   timeVariance,
+  languageIndex,
+  numbers,
+  punctuation,
+  capital,
 } : inputProps ) => {
   const blurRef = useRef<HTMLDivElement>(null!);
   const textRef = useRef<HTMLDivElement>(null!); 
@@ -60,91 +85,52 @@ const Input = ({
       setProgress(wordsProgress + " / " + wordsVariance);
       if (wordsProgress === Number(wordsVariance)) {
         setEndTime(Date.now);
-        inputRef.current.blur();
       }
     }
     else if (mode === "Time") {
       setProgress(makeTimePrettier(timeProgress.toString()));
       if (timeProgress < 1) {
-        clearInterval(intervalRef.current);
         setEndTime(Date.now);
-        inputRef.current.blur();
       }
     }
   }, [mode, timeProgress, wordsProgress, wordsVariance]);
 
-  const changeVariance = useEffect(() => {
+  const restartRun = useEffect(() => {
     composeString();
-
-    if (mode === "Time") {
-      setTimeProgress(Number(timeVariance));
-    } 
-    else if (mode === "Words") {
-      setWordsProgress(0);
-    } 
-
-    clearInterval(intervalRef.current);
-  }, [timeVariance, wordsVariance, mode])
-
-  const caret = "<font style='color: #FFB02E; margin: 0 -7px; animation: caret 1s infinite'>|</font>";
-    
-  function checkResult() {
-    let wpm = 0;
-    let correctColor = "filled-font-color";
+  }, [timeVariance, wordsVariance, mode, languageIndex])
+  
+  const callResult = useEffect(() => {
     let correctChar = 0;
 
     for (let i = 0; i < indToFill-1; i++) {
-      if (splitted[i] === `<font style="color:var(--${correctColor})">${string[i]}</font>`) {
+      if (splitted[i] === `<font style="color:var(--filled-font-color)">${string[i]}</font>`) {
         correctChar++;
       } 
     }
 
-    wpm = Math.floor(correctChar / ((endTime - startTime) / 1000 / 60) / 5);
-    
-    return wpm;
-  }
-  
-  useEffect(() => {
-    const result = checkResult();
+    const wpm = Math.floor(correctChar / ((endTime - startTime) / 1000 / 60) / 5);
 
-    if (mode === "Time" && !Number.isNaN(result)) {
-      setPrevTimeResult(result);
-
-      if (result > bestTimeResult) {
-        setBestTimeResult(result);
+    if (mode === "Time" && !Number.isNaN(wpm)) {
+      setPrevTimeResult(wpm);
+      if (wpm > bestTimeResult) {
+        setBestTimeResult(wpm);
       }
     } 
-    else if (!Number.isNaN(result)) {
-      setPrevWordsResult(result);
-      
-      if (result > bestWordsResult) {
-        setBestWordsResult(result);
+    else if (!Number.isNaN(wpm)) {
+      setPrevWordsResult(wpm);
+      if (wpm > bestWordsResult) {
+        setBestWordsResult(wpm);
       }
     }
+
+    composeString();
   }, [endTime])
 
-  useEffect(()=>{
+  const moveText = useEffect(()=>{
     textRef.current.style.left = `-${translateX}px`;
   }, [translateX])
 
   function handleInput() {
-    let index = indToFill;
-    let color = "filled"; 
-    let symbol = string[indToFill-1];
-    let currentInputLength = inputRef.current.value.length;
-    
-    function fillSymbolAndMoveCaret(firstSwapEl: number, 
-                                    secondSwapEl: number, 
-                                    incrementValue: number, 
-                                    strMovementDist: number) {
-      splitted[index] = `<font style="color:var(--${color}-font-color)">${symbol}</font>`;
-
-      [splitted[firstSwapEl], splitted[secondSwapEl]] = [splitted[secondSwapEl], splitted[firstSwapEl]];
-
-      setIndToFill(incrementValue);
-      setTranslateX(dist => dist += strMovementDist)
-    }
-
     if (!isRunning) {      
       if (mode === "Time") {
         intervalRef.current = setInterval(()=> {
@@ -155,31 +141,34 @@ const Input = ({
       setIsRunning(true);
     } 
 
-    if (currentInputLength > passedInputLength) {
-      if (mode === "Words" && string[indToFill-1] === ' ') {
-        setWordsProgress(prev => prev + 1);
-      }
+    if (inputRef.current.value.length > passedInputLength) {
+      let color = "filled"; 
+      let symbol = string[indToFill-1];
 
       if (inputRef.current.value.at(-1) !== string[indToFill-1]) {
         color = "uncorrect";
-        
+    
         if (string[indToFill-1] == ' ') {
           symbol = inputRef.current.value.at(-1)!;
         }
       }
 
-      fillSymbolAndMoveCaret(indToFill, indToFill-1, indToFill+1, 18.7);
+      if (mode === "Words" && string[indToFill-1] === ' ') {
+        setWordsProgress(prev => prev + 1);
+      }
+      splitted[indToFill] = `<font style="color:var(--${color}-font-color)">${symbol}</font>`;
+      [splitted[indToFill], splitted[indToFill - 1]] = [splitted[indToFill - 1], splitted[indToFill]];
+      setTranslateX(dist => dist += 18.7);
+      setIndToFill(indToFill + 1);
     } 
     else if (indToFill > 1) {
       if (mode === "Words" && string[indToFill-2] === ' ') {
         setWordsProgress(prev => prev - 1);
       }
-
-      color = "unfilled";
-      symbol = string[indToFill-2];
-      index = indToFill-2;
-
-      fillSymbolAndMoveCaret(indToFill-2, indToFill-1, indToFill-1, -18.7);
+      splitted[indToFill-2] = `<font style="color:var(--unfilled-font-color)">${string[indToFill-2]}</font>`;
+      [splitted[indToFill - 2], splitted[indToFill - 1]] = [splitted[indToFill - 1], splitted[indToFill - 2]];
+      setTranslateX(dist => dist -= 18.7);
+      setIndToFill(indToFill - 1);
     }
         
     setPassedInputLength(inputRef.current.value.length);
@@ -187,32 +176,32 @@ const Input = ({
   }
 
   function composeString() {
-    setString('');
     setPassedInputLength(0);
     setIndToFill(1);
     setIsRunning(false);
     setWordsProgress(0);
     setTimeProgress(Number(timeVariance));
     setTranslateX(0);
+    clearInterval(intervalRef.current);
     inputRef.current.value = '';
+    inputRef.current.blur();
 
     let copy = '';
     for (let i = 0; i < 30; i++) {
-      copy += 'hello ';
+      copy += dictionary[languageIndex][randint(dictionary[languageIndex].length)] + ' ';
     }
     setString(copy);
 
     let copySplitted = copy.split('');
+    const caret = "<font style='color: #FFB02E; margin: 0 -7px; animation: caret 1s infinite'>|</font>";
     copySplitted.unshift(caret);
     setSplitted(copySplitted);
   }
   
   useEffect(()=>{
     textRef.current.innerHTML = splitted.join('');
-  },[splitted])
+  }, [splitted])
 
-  useEffect(composeString, [mode, wordsVariance, timeVariance]);
-  
   function showMessage() {
     blurRef.current.style.opacity = '100%';
   }
@@ -268,6 +257,5 @@ const Input = ({
     </>
   );
 }
-
 
 export default Input;
