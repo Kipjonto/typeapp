@@ -71,21 +71,6 @@ const Modifications = ({
     }
   }, [blindness]);
 
-  useEffect(()=>{
-    console.log(1)
-
-  }, [punctuation]);
-
-  useEffect(()=>{
-    console.log(1)
-
-  }, [numbers]);
-
-  useEffect(()=>{
-    console.log(1)
-
-  }, [capital]);
-
   const modificationList = modifications.map(mode => {
     return (
       <button 
@@ -106,7 +91,7 @@ const Modifications = ({
 
   return (
     <div className='section section--modifications'>
-      <p>Modifications</p>
+      <p className='section__name'>Modifications</p>
       <div className='section__scroll scroll--modifications'>
         {modificationList}
       </div>

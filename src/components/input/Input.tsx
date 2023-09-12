@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
-import "./input.css";
 import russianWords from '../settings/languages/russian';
 import englishWords from '../settings/languages/english';
 import jsWords from '../settings/languages/java-script';
 import cppWords from '../settings/languages/cplusplus';
 import pythonWords from '../settings/languages/python';
+import "./input.css";
 
 const dictionary = [
   russianWords,
@@ -96,8 +96,8 @@ const Input = ({
   }, [mode, timeProgress, wordsProgress, wordsVariance]);
 
   const restartRun = useEffect(() => {
-    composeString();
-  }, [timeVariance, wordsVariance, mode, languageIndex])
+    restart();
+  }, [timeVariance, wordsVariance, mode, languageIndex, punctuation, numbers, capital])
   
   const callResult = useEffect(() => {
     let correctChar = 0;
@@ -123,7 +123,7 @@ const Input = ({
       }
     }
 
-    composeString();
+    restart();
   }, [endTime])
 
   const moveText = useEffect(()=>{
@@ -156,6 +156,7 @@ const Input = ({
       if (mode === "Words" && string[indToFill-1] === ' ') {
         setWordsProgress(prev => prev + 1);
       }
+
       splitted[indToFill] = `<font style="color:var(--${color}-font-color)">${symbol}</font>`;
       [splitted[indToFill], splitted[indToFill - 1]] = [splitted[indToFill - 1], splitted[indToFill]];
       setTranslateX(dist => dist += 18.7);
@@ -175,7 +176,7 @@ const Input = ({
     textRef.current.innerHTML = splitted.join('');
   }
 
-  function composeString() {
+  function restart() {
     setPassedInputLength(0);
     setIndToFill(1);
     setIsRunning(false);
@@ -187,8 +188,35 @@ const Input = ({
     inputRef.current.blur();
 
     let copy = '';
+    const punctuationSigns = ['.', ',', ':', ';', '"', "'", '@', '!', '/', '*'];
     for (let i = 0; i < 30; i++) {
-      copy += dictionary[languageIndex][randint(dictionary[languageIndex].length)] + ' ';
+      let space = ''
+      let word = dictionary[languageIndex][randint(dictionary[languageIndex].length)];
+
+      if (punctuation) {
+        const punctuationChoice = randint(punctuationSigns.length * 4);
+        if (punctuationChoice < punctuationSigns.length) {
+          space += punctuationSigns[punctuationChoice];
+        };
+      }
+
+      if (capital) {
+        const capitalChoice = randint(4);
+        if (capitalChoice === 0) {
+          word = word[0].toUpperCase() + word.slice(1,word.length);
+        }
+      }
+
+      space += ' ';
+
+      if (numbers) {
+        const numberChoice = randint(4);
+        if (numberChoice === 0) {
+          space += randint(10000) + ' ';
+        }
+      }
+
+      copy += word + space;
     }
     setString(copy);
 
@@ -252,7 +280,7 @@ const Input = ({
       />
       <div className='shadow shadow--left' />
       <div className='shadow shadow--right' />
-      <button className='button--restart' onClick={composeString}>&#x21bb;</button>
+      <button className='button--restart' onClick={restart}>&#x21bb;</button>
       <code className='text' ref={textRef} />
     </>
   );

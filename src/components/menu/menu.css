@@ -30,16 +30,7 @@
 .buttons-panel--lvl1 {
   bottom: 7em;
   z-index: 10;
-}
-
-.buttons-panel--lvl2 {
-  bottom: 10em;
-  z-index: 10;
-}
-
-.buttons-panel--lvl3 {
-  bottom: 13em;
-  z-index: 10;
+  margin-right: 4em;
 }
 
 .menu__button:hover {
@@ -55,11 +46,6 @@
   color: var(--filled-font-color)
 }
 
-.button--non-active {
-  pointer-events: none;
-  opacity: 0;
-}
-
 .menu-icon {
   background-image: url(/src/img/menu-img.png);
   background-size: 40%;
@@ -67,17 +53,17 @@
   opacity: 40%;
 }
 
-.dzen {
+.Dzen {
   background-image: url(/src/img/inf-img.png);
   background-size: 60%;
 }
 
-.words {
+.Words {
   background-image: url(/src/img/words-img.png);
   background-size: 40%;
 }
 
-.time {
+.Time {
   background-image: url(/src/img/time-img.png);
   background-size: 30%;
 }
@@ -110,4 +96,5 @@
   right: 16%;
   z-index: 9999;
   font-size: 1.3em;
+  transition: .3s;
 }

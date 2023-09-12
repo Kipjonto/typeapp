@@ -54,7 +54,7 @@ const Themes = ({
 
   return (
     <div className='section section--themes'>
-      <p>Themes</p>  
+      <p className='section__name'>Themes</p>  
       <div className='section__scroll'>
         {themesList}
       </div>

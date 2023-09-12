@@ -32,7 +32,7 @@ const Languages = ({
 
   return (
     <div className='section section--languages'>
-      <p>Languages</p>
+      <p className='section__name'>Languages</p>
       <div className='section__scroll'>
         {languageList}
       </div>

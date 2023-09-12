@@ -1,111 +1,5 @@
 import { useState, useRef } from 'react';
 import "./menu.css";
-
-type UIcontrolProps = {
-  mode: string; 
-  isMenuActive: boolean;
-  showDescribe: (arg: string) => void;
-  hideDescribe: () => void; 
-}
-
-type settingProps = UIcontrolProps & {
-  openSetting: () => void;
-  setting: string;
-  bgClassName: string;
-}
-
-const Setting = ({
-  openSetting, 
-  showDescribe, 
-  hideDescribe,
-  isMenuActive, 
-  bgClassName,
-  setting
-} : settingProps) => {
-  return (
-    <button
-      className={"menu__button " + bgClassName}
-      onClick={openSetting}
-      onMouseOver={() => showDescribe(setting)}
-      onMouseLeave={hideDescribe}
-      style={
-        !isMenuActive ?
-          {opacity: "0%", pointerEvents: "none"}
-        : {}
-      }
-    />
-  )
-}
-      
-type modeProps = UIcontrolProps & {
-  childMode: string;
-  mode: string;
-  setMode: (arg: string) => void; 
-  bgClassName: string;
-}
-      
-const Mode = ({
-  setMode,
-  showDescribe,
-  hideDescribe,
-  mode,
-  childMode,
-  isMenuActive,
-  bgClassName,
-}: modeProps) =>  {
-  return (
-    <button 
-      className={"menu__button " + bgClassName}
-      onClick={() => setMode(childMode)} 
-      onMouseOver={() => showDescribe(childMode + " mode")}
-      onMouseLeave={hideDescribe} 
-      style={
-        isMenuActive ?
-          childMode == mode ?
-            {opacity: "100%"} 
-          : {}  
-        : {opacity: '0%', pointerEvents: "none"}
-      } 
-    />
-  );
-}
-
-
-type varianceProps = UIcontrolProps & {
-  variance: string; 
-  childMode: string; 
-  varianceState: string;
-  setVariance: (arg: string) => void; 
-};
-
-const Variance = ({
-  variance,
-  setVariance,
-  varianceState,
-  showDescribe,
-  hideDescribe,
-  mode,
-  childMode,
-  isMenuActive
-} : varianceProps) => {
-  return (
-    <button
-      className="menu__button variance" 
-      onClick={() => setVariance(variance)}
-      onMouseOver={() => showDescribe(childMode + ' mode / ' + variance)}
-      onMouseLeave={hideDescribe}
-      style={
-        isMenuActive && childMode == mode ?
-          varianceState == variance ?
-            {color: "var(--filled-font-color)"}
-          : {}
-        : {opacity: "0%", pointerEvents: "none"}
-      } 
-    >
-      {variance}
-    </button>
-  );
-}
   
 type menuProps = {
   mode: string;
@@ -141,91 +35,95 @@ const Menu = ({
     describeRef.current.style.opacity = '0%';
   }
   
+  const modes = [
+    "Dzen", "Words", "Time"
+  ];
+  const modeList = modes.map(el => {
+    return (
+      <button 
+        className={"menu__button " + el}
+        onClick={() => setMode(el)} 
+        onMouseOver={() => showDescribe(el + " mode")}
+        onMouseLeave={hideDescribe} 
+        style={
+          isMenuActive ?
+            el === mode ?
+              {opacity: "100%"} 
+            : {}  
+          : {opacity: '0%', pointerEvents: "none"}
+        } 
+      />
+    );
+    }
+  )
+
+  const timeVariances = ['15', '30', '60'];
+  const timeVariancesList = timeVariances.map(el => {
+    return (
+      <button
+        className="menu__button variance" 
+        onClick={() => setTimeVariance(el)}
+        onMouseOver={() => showDescribe('Time mode / ' + el + 's')}
+        onMouseLeave={hideDescribe}
+        style={
+          el == timeVariance ?
+            {color: "var(--filled-font-color)"}
+          : {}
+        } 
+      >
+        {el + "s"}
+      </button>
+    );
+  })
+
+  const wordsVariances = ['10', '25', '50'];
+  const wordsVariancesList = wordsVariances.map(el => {
+    return (
+      <button
+        className="menu__button variance" 
+        onClick={() => setWordsVariance(el)}
+        onMouseOver={() => showDescribe('Words mode / ' + el)}
+        onMouseLeave={hideDescribe}
+        style={
+          el == wordsVariance ?
+            {color: "var(--filled-font-color)"}
+          : {}
+        } 
+      >
+        {el}
+      </button>
+    );
+  })
+
   return (
     <>
-      <div className='menu__buttons-panel buttons-panel--lvl3'  style={settingsWindowState ? {pointerEvents: "none", opacity: '0%'} : {}}>
-        <Variance 
-          variance="50" 
-          childMode="Words" 
-          varianceState={wordsVariance} 
-          setVariance={setWordsVariance} 
-          isMenuActive={isMenuActive} 
-          mode={mode} 
-          showDescribe={showDescribe} 
-          hideDescribe={hideDescribe} 
-        />
-        <Variance 
-          variance="60" 
-          childMode="Time" 
-          varianceState={timeVariance} 
-          setVariance={setTimeVariance} 
-          isMenuActive={isMenuActive} 
-          mode={mode} 
-          showDescribe={showDescribe} 
-          hideDescribe={hideDescribe} 
-        />
-        <div className='menu__button button--non-active' />
-        <div className='menu__button button--non-active' />
+      <div 
+        className='menu__buttons-panel buttons-panel--lvl1' 
+        style={
+          settingsWindowState || mode === "Time" || !isMenuActive ? 
+            {pointerEvents: "none", opacity: '0%'} 
+          : {}
+        }
+      >
+        {wordsVariancesList}
       </div>
-      <div className='menu__buttons-panel buttons-panel--lvl2' style={settingsWindowState ? {pointerEvents: "none", opacity: '0%'} : {}}>
-        <Variance 
-          variance="25" 
-          childMode="Words" 
-          varianceState={wordsVariance} 
-          setVariance={setWordsVariance} 
-          isMenuActive={isMenuActive} 
-          mode={mode} 
-          showDescribe={showDescribe} 
-          hideDescribe={hideDescribe}
-        />
-        <Variance 
-          variance="30" 
-          childMode="Time" 
-          varianceState={timeVariance} 
-          setVariance={setTimeVariance}
-          isMenuActive={isMenuActive} 
-          mode={mode} 
-          showDescribe={showDescribe} 
-          hideDescribe={hideDescribe}  
-        />
-        <div className='menu__button button--non-active' />
-        <div className='menu__button button--non-active' />
-      </div>
-      <div className='menu__buttons-panel buttons-panel--lvl1'  style={settingsWindowState ? {pointerEvents: "none", opacity: '0%'} : {}}>
-        <Variance 
-          variance="10" 
-          childMode="Words" 
-          varianceState={wordsVariance} 
-          setVariance={setWordsVariance} 
-          isMenuActive={isMenuActive} 
-          mode={mode} 
-          showDescribe={showDescribe} 
-          hideDescribe={hideDescribe} 
-        />
-        <Variance 
-          variance="15" 
-          childMode="Time" 
-          varianceState={timeVariance} 
-          setVariance={setTimeVariance} 
-          isMenuActive={isMenuActive} 
-          mode={mode} 
-          showDescribe={showDescribe} 
-          hideDescribe={hideDescribe} 
-        />
-        <div className='menu__button button--non-active' />
-        <div className='menu__button button--non-active' />
+      <div 
+        className='menu__buttons-panel buttons-panel--lvl1'  
+        style={
+          settingsWindowState || mode === "Words" || !isMenuActive ? 
+            {pointerEvents: "none", opacity: '0%'} 
+          : {}}
+      >
+        {timeVariancesList}
       </div>
       <div className='menu__buttons-panel buttons-panel--lvl0'>
-        <Mode childMode="Dzen" mode={mode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setMode={setMode} bgClassName='dzen' />
-        <Mode childMode="Words" mode={mode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setMode={setMode} bgClassName='words' />
-        <Mode childMode="Time" mode={mode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setMode={setMode} bgClassName='time' />
-        <Setting mode={mode} isMenuActive={isMenuActive} showDescribe={showDescribe} hideDescribe={hideDescribe} setting="Settings" openSetting={() => switchSettingsWindow(!settingsWindowState)} bgClassName='settings' />
+        {modeList}
+        <button className="menu__button settings" onClick={() => switchSettingsWindow(!settingsWindowState)} onMouseOver={() => showDescribe("Settings")} onMouseLeave={hideDescribe} style={ !isMenuActive ? {opacity: "0%", pointerEvents: "none"} : {} } />
         <button className='menu__button menu-icon' onMouseLeave={hideDescribe} onMouseOver={() => showDescribe("Menu")} onClick={() => setIsMenuActive(!isMenuActive)} style={isMenuActive ? {opacity: '100'} : {} } />
       </div>
       <div className='menu__description' ref={describeRef}>{currentButton}</div>
     </>
   );
 }
-
 
 export default Menu;
