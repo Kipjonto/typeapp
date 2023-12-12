@@ -24,4 +24,4 @@ make yourself blind and a lot more.
 * Run `npm start` to launch a local server
 * Enjoy!
 
-`You must install npm, React.js and TypeScript libraries!`
+__You must install npm, React.js and TypeScript libraries!__
